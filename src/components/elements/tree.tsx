@@ -43,7 +43,7 @@ function Tree({ item }: { item: any }) {
     };
 
     const isItemInPath = (node: any, itemName: string): boolean => {
-        if (node.name === itemName) return true;
+        if (node.name.toLowerCase().includes(itemName.toLowerCase())) return true;
         return node.children?.some((child: any) => isItemInPath(child, itemName));
     };
 
@@ -69,7 +69,7 @@ function Tree({ item }: { item: any }) {
             >
                 <CollapsibleTrigger asChild>
                     <SidebarMenuButton
-                        isActive={activeItem === name}
+                        isActive={activeItem.includes(name)}
                         className="data-[active=true]:bg-[#318CE7]/10 data-[active=true]:text-[#318CE7]"
                         onClick={handleClick}
                     >
@@ -96,12 +96,16 @@ function Tree({ item }: { item: any }) {
 export default function TreeWrapper({ items }: { items: any[] }) {
     return (
         <>
-            {items.map((item, index) => (
-                <Tree 
-                    key={index} 
-                    item={item}
-                />
-            ))}
+            {items.length === 0 ? (
+                <div className="text-center text-gray-500 py-4">No item found</div>
+            ) : (
+                items.map((item, index) => (
+                    <Tree 
+                        key={index} 
+                        item={item}
+                    />
+                ))
+            )}
         </>
     );
 }
