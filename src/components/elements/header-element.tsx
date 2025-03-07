@@ -9,7 +9,7 @@ type Props = {}
 const HeaderElement = ({ }: Props) => {
   const { setExpandAll, setCollapseAll } = useCategoryStore();
   return (
-    <div className='z-[9999] px-3 py-3 bg-sidebar text-accent-foreground mt-3 rounded-md shadow-xs'>
+    <div className='z-[9999] px-3 py-3 bg-sidebar text-accent-foreground mt-4 rounded-md shadow-xs'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-x-2'>
           <Searchable />
