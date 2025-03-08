@@ -13,7 +13,7 @@ import {
 import useCategoryStore from "@/hooks/globals/category";
 
 function Tree({ item }: { item: any }) {
-    const { activeItem, setActiveItem, expandAll, collapseAll } = useCategoryStore();
+    const { matchedItems, activeItem, setActiveItem, expandAll, collapseAll } = useCategoryStore();
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -50,7 +50,7 @@ function Tree({ item }: { item: any }) {
     if (!children || children.length === 0) {
         return (
             <SidebarMenuButton
-                isActive={activeItem === name}
+                isActive={activeItem === name || matchedItems.includes(name)}
                 className="data-[active=true]:bg-[#318CE7]/10 data-[active=true]:text-[#318CE7]"
                 onClick={handleClick}
             >
@@ -69,7 +69,7 @@ function Tree({ item }: { item: any }) {
             >
                 <CollapsibleTrigger asChild>
                     <SidebarMenuButton
-                        isActive={activeItem.includes(name)}
+                        isActive={activeItem === name || matchedItems.includes(name)}
                         className="data-[active=true]:bg-[#318CE7]/10 data-[active=true]:text-[#318CE7]"
                         onClick={handleClick}
                     >

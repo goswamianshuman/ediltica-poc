@@ -11,6 +11,8 @@ export interface CategoryState {
     activeItem: string;
     expandAll: boolean;
     collapseAll: boolean;
+    matchedItems: any[];
+    setMatchedItems: (matchedItems: any[]) => void;
     addFileOrFolder: (path: string, item: string, isFile?: boolean) => void;
     updateFilteredTree: (filteredTree: TreeNode[]) => void;
     setActiveItem: (name: string) => void;
@@ -58,6 +60,7 @@ let sampleData = [
 const useCategoryStore = create<CategoryState>((set) => ({
     tree: sampleData,
     filteredTree: sampleData, 
+    matchedItems: [],
     activeItem: "",
     expandAll: false,
     collapseAll: false,
@@ -86,6 +89,7 @@ const useCategoryStore = create<CategoryState>((set) => ({
         }),
     
     updateFilteredTree: (filteredTree) => set({ filteredTree }),
+    setMatchedItems: (matchedItems) => set({matchedItems}),
     setActiveItem: (name) => set({ activeItem: name }),
     setExpandAll: (expand) => set({ expandAll: expand, collapseAll: !expand }),
     setCollapseAll: (collapse) => set({ collapseAll: collapse, expandAll: !collapse }),

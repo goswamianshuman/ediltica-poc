@@ -3,13 +3,14 @@ import { Input } from "../ui/input";
 import { SearchIcon } from 'lucide-react';
 
 const Searchable = () => {
-    const { tree, updateFilteredTree, setActiveItem } = useCategoryStore();
+    const { tree, updateFilteredTree, setActiveItem, setMatchedItems } = useCategoryStore();
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const query = e.target.value;
         if (query.trim() === "") {
             updateFilteredTree(tree);
             setActiveItem("");
+            setMatchedItems([])
         } else {
             const filterTree = (nodes: any[], searchTerm: string): any[] => {
                 return nodes
@@ -28,9 +29,27 @@ const Searchable = () => {
                     })
                     .filter(Boolean);
             };
-            updateFilteredTree(filterTree(tree, query));
-        }
-    };
+
+            let filteredData = filterTree(tree, query);
+            const logMatchingNodes = (nodes: any[], searchTerm: string) => {
+              let matchedItems: Map<string, any> = new Map();
+              nodes.forEach((node) => {
+              if (node.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+                matchedItems.set(node.name, node.name);
+              }
+              if (node.children) {
+                const childMatches = logMatchingNodes(node.children, searchTerm);
+                childMatches.forEach((value, key) => matchedItems.set(key, value));
+              }
+              });
+
+              return matchedItems;
+            };
+
+            setMatchedItems(Array.from(logMatchingNodes(filteredData, query).values()))
+            updateFilteredTree(filteredData);
+          }
+        };
 
     return (
         <div className="flex items-center gap-x-2">
